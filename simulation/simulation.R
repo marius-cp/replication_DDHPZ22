@@ -11,19 +11,19 @@ source("helpers.R")
 devtools::install_github("https://github.com/marius-cp/calibrationband"
                          ,ref="main"
                          # insert your access token below
-                         ,auth_token = "5514ebdc4ba3a82b44b3298be724b8369dae5bc3"
+                         ,auth_token = "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"#"5514ebdc4ba3a82b44b3298be724b8369dae5bc3"
                          , dependencies = T
                          )
 library(calibrationband)
 
 # set of sample sizes
-n.set <- 10000#2^seq(9,15,1)
+n.set <- 2^seq(9,15,1)
 # restictions on the number of unique prediction values
 k.set <- c(20, Inf)
 # misspecification set
-s.set <- c(.5,.7)#seq(0,1,.1)
+s.set <- seq(0,1,.1)
 # DGP (functional form of misspecification)
-misspec.set <- c("S","kink")#c("S", "Step", "DGJ", "kink", "disc")
+misspec.set <- c("S", "Step", "DGJ", "kink", "disc")
 # distribution of prediction values (unif, logit-normal, beta)
 dist.x <-"unif"
 # parameters for beta distribution
@@ -40,7 +40,7 @@ al = .05
 
 
 # set up parallel
-core.max <- 70
+core.max <- 60
 cl <-  min(parallel::detectCores()-1, core.max)
 #registerDoMC(cores=cl)
 #getDoParWorkers()
@@ -50,7 +50,7 @@ registerDoParallel(cl)
 
 start.time <- Sys.time()
 
-MCsim <- foreach(i = 1:2,
+MCsim <- foreach(i = 1:500,
                  .errorhandling = "pass",
                  .packages=c("calibrationband", "givitiR",
                              "dplyr", "tibble", "logitnorm"
@@ -222,3 +222,4 @@ dat
 
 dat %>% filter(method != "GiViTI") %>% filter(label=="coversCEP") %>% summarise(mean(value))
 
+saveRDS(MCsim, file = paste("sim_xdist_A_",dist.x,".rds", sep = ""))
