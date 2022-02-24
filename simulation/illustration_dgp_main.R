@@ -4,7 +4,6 @@ library(dplyr)
 library(ggplot2)
 
 misspec.set <- c("S", "Step", "DGJ", "kink", "disc")
-dist.x.set <- c("unif", "lognorm", "beta")
 s.set <- c(0.3,0.7)
 b.param.1 <- .5
 b.param.2 <- 2
@@ -126,7 +125,16 @@ p <-
     legend.spacing.x = unit(1, "mm"),
     plot.title = element_text(size = 10)
     )+
-  guides(colour= guide_legend(nrow=1))+
+  guides(
+    colour= guide_legend(
+      nrow=1,
+      title = expression(paste('shape parameter ', italic(s), ':     '))
+    ),
+    linetype= guide_legend(
+      nrow=1,
+      title = expression(paste('shape parameter ', italic(s), ':     '))
+    )
+    )+
   xlab(expression(paste('forecast value ', italic(x))))+
   ylab(expression(paste('calibration curve ', italic(p))))+
   scale_linetype_manual(values=c( "solid", "dotted", "12"))+

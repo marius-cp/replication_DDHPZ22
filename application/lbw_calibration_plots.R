@@ -42,7 +42,7 @@ fig1a <- calibration_bands(
 summary(fig1a)
 fig1a$cal
 p <-
-autoplot(fig1a, approx.equi = F,cut.bands = T, diag = "red",  point=1000)
+autoplot(fig1a, approx.equi = F,cut.bands = F, diag = "red")
 p
 
 p+
