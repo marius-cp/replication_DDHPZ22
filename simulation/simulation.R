@@ -6,14 +6,15 @@ library(logitnorm)
 library(doMC)
 library(doParallel)
 library(givitiR)
+library(ggplot2)# delete when ggplot2:geom_poly...
 source("helpers.R")
 # install calibrationband library
 devtools::install_github("https://github.com/marius-cp/calibrationband"
                          ,ref="main"
                          # insert your access token below
                          ,auth_token = "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"#"5514ebdc4ba3a82b44b3298be724b8369dae5bc3"
-                         , dependencies = T
-                         )
+                         , dependencies = T)
+
 library(calibrationband)
 
 # set of sample sizes
@@ -23,7 +24,7 @@ k.set <- c(20, Inf)
 # misspecification set
 s.set <- seq(0,1,.1)
 # DGP (functional form of misspecification)
-misspec.set <- c("S", "Step", "DGJ", "kink", "disc")
+misspec.set <-  c("S", "Step", "DGJ", "kink", "disc")
 # distribution of prediction values (unif, logit-normal, beta)
 dist.x <-"unif"
 # parameters for beta distribution
@@ -50,7 +51,7 @@ registerDoParallel(cl)
 
 start.time <- Sys.time()
 
-MCsim <- foreach(i = 1:500,
+MCsim <- foreach(i = 1:1000,
                  .errorhandling = "pass",
                  .packages=c("calibrationband", "givitiR",
                              "dplyr", "tibble", "logitnorm"
@@ -139,6 +140,7 @@ MCsim <- foreach(i = 1:500,
                            #bandinfo(obj=round, dist.x = dist.x, s=s, k=k, setup = misspec, n=n)$band.info$cep.at.x,
                            #pc(round$bands$x[ifelse(round$bands$x >= min(dat$pr)  & round$bands$x <= max(dat$pr) , TRUE,FALSE)])
                            #)
+                          #all_equal(round$bands, round.nc$bands)
 
 
 
@@ -211,7 +213,7 @@ MCsim <- foreach(i = 1:500,
                  } # par loop
 stopCluster(cl)
 end.time <- Sys.time()
-(run.time <- end.time-start.time)#500 reps, 100 cores, 10 hours for runif
+(run.time <- end.time-start.time)# Time difference of 1.217456 days, 60 cores
 
 
 check <- sapply(MCsim, function(x) inherits(x, 'error'))
@@ -220,6 +222,7 @@ MCsim[check]
 dat <-do.call("rbind", out)
 dat
 
-dat %>% filter(method != "GiViTI") %>% filter(label=="coversCEP") %>% summarise(mean(value))
 
-saveRDS(MCsim, file = paste("sim_xdist_A_",dist.x,".rds", sep = ""))
+#dat %>% filter(method != "GiViTI") %>% filter(label=="coversCEP") %>% summarise(mean(value))
+
+saveRDS(MCsim, file = paste("sim_xdist_",dist.x,".rds", sep = ""))
