@@ -168,6 +168,7 @@ dat.cov %>% filter(
   cov.rate != 1
   )
 covrates.verbal
+
 # 212 colored panels
 # 33 are != 1
 # We observe coverage rates between 0.998 and 1, with the majority of 212-33= 179 out of the 212 displayed coverage values being exactly one.
