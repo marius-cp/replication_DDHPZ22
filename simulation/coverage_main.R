@@ -4,13 +4,14 @@ setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 library(dplyr)
 library(ggplot2)
 
-dat <- readRDS("../../sim_data/sim_xdist_A_unif.RDS")
+dat <- readRDS("../../sim_data/sim_xdist_unif.RDS")
 check <- sapply(dat, function(x) inherits(x, 'error'))
 out <- dat[!check]
-dat[check]
+dat[check] # GIVITI fails 6 times
 dat <-do.call("rbind", out)
 dat
 
+dat <- readRDS("../../sim_data/sim_rbind_xdist_unif.RDS")
 
 # coverage ---------------------------------------------------------------------
 
@@ -64,6 +65,7 @@ dat.cov <-
       .ordered = T
       )
     )
+dat.cov
 
 relevant.values <-
   dat.cov %>%
@@ -78,7 +80,7 @@ relevant.values <-
     maxS=max(s),
     minS=min(s)
   )
-
+relevant.values
 
 p <-
   ggplot(dat.cov %>% filter(method %in% c("Calibration Bands","GiViTI")))+
@@ -158,51 +160,3 @@ p <-
 p
 
 ggsave("Fig_3.pdf", height = 5, width = 10)
-
-
-# differences between bands ----
-
-dif.in.round <-
-  dat %>%
-  filter(
-    method%in%c("round","round.nc"),
-    label == "width"
-  ) %>%
-  tidyr::pivot_wider(
-    names_from = method,
-    values_from = value
-  ) %>%
-  mutate(
-    dif.round = as.numeric(round!=round.nc),
-    relativ = round.nc/round,
-    n=log2(n)
-  ) %>%
-  filter(
-    #n %in% c(8192,32768),
-    dif.round ==1
-  ) %>%
-  group_by(
-    dist.x,
-    n,
-    k,
-    s,
-    setup
-  ) %>%
-  mutate("distrinct draws" = as.factor(n_distinct(seed)),
-         s= as.factor(s))
-
-dif.in.round %>%   group_by(n) %>%
-  # .[complete.cases(.),] %>%
-  ggplot(aes(x=n,y=(relativ), shape = `distrinct draws`, color = s))+
-  geom_point()+
-  facet_grid(k~setup, scales = "free_y")+
-  scale_x_continuous(
-    breaks = seq(min(dat.cov$n),max(dat.cov$n),2),
-    labels = c(2^seq(min(dat.cov$n),max(dat.cov$n),2))
-  )
-# If there is a difference between the width of CB and CBnc, then obviously CBnc is wider. We here plot the relative difference between the two methods.
-
-
-
-# wir haben bei nc methode immer round+fcasts values... klar ist der durchschnittl breite über alle x (fcast values) anders, da wir die riund mit dazu nehmen
-

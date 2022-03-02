@@ -10,6 +10,8 @@ dat[check]
 dat <-do.call("rbind", out)
 dat
 
+dat <- readRDS("../../sim_data/sim_rbind_xdist_unif.RDS")
+
 # avg width full interval ----
 s_=0.5
 

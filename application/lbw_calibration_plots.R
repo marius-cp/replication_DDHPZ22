@@ -46,15 +46,15 @@ fig1 <- calibration_bands(
 
 basep <- plot(fig1)
 summary(fig1)
+print(fig1)
 
 fig1a <-
-autoplot(fig1, approx.equi = T ,cut.bands = T, diag = "default" , points = 1000)
+autoplot(fig1, approx.equi = 1000 ,cut.bands = T)
 fig1a
 
 
 fig1b <-
-  autoplot(fig1, approx.equi = T ,cut.bands = T,
-           diag = "default", shaddow = "blue", points = 1000)+
+  autoplot(fig1, approx.equi = 1000,cut.bands = T)+
   #geom_line(aes(basep$x_upr, basep$upr), color = "green")+
   #geom_line(aes(basep$x_lwr, basep$lwr), color = "green")+
   coord_cartesian(xlim=c(0,.1),ylim=c(0,.15))+
@@ -82,7 +82,7 @@ mod1.pairs.tr <-
     "P" =predict(mod1,newdata = bw_train, type='response')
     )
 HL.IS.mod1 <-  hoslem.test(x=mod1.pairs.tr$Y, y=mod1.pairs.tr$P, g=10);HL.IS.mod1
-HL.OOS.mod1 <- hoslem.test(x=mod1.pairs.ts$Y, y=mod1.pairs.ts$P, g=10);HL.OOS
+HL.OOS.mod1 <- hoslem.test(x=mod1.pairs.ts$Y, y=mod1.pairs.ts$P, g=10);HL.OOS.mod1
 HL.OOS.mod1$statistic # = 231.8554
 1 - pchisq(HL.OOS.mod1$statistic, 10) # =0
 1 - pchisq(HL.OOS.mod1$statistic, 9) # =0
@@ -115,7 +115,7 @@ mod2.fig5 <- calibration_bands(
 mod2.fig5
 
 Fig_5_left <-
-autoplot(mod2.fig5, approx.equi = T ,cut.bands = T, diag = "red", points = 1000)
+autoplot(mod2.fig5, approx.equi = 1000 ,cut.bands = T)
 
 mod2.pairs.tr <-
   tibble(
@@ -156,7 +156,7 @@ mod3.fig5 <- calibration_bands(
 mod3.fig5
 
 Fig_5_right <-
-  autoplot(mod3.fig5, approx.equi = T ,cut.bands = T, diag = "red", points = 1000)
+  autoplot(mod3.fig5, approx.equi = 1000 ,cut.bands = T)
 
 mod3.pairs.tr <-
   tibble(
