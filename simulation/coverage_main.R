@@ -21,7 +21,7 @@ dat.cov <-
     n%in%c(2^seq(9,15,2))
     ) %>%
   filter(
-    #!(setup == "Step" & s== 0),
+    !(setup == "Step" & s== 0),
     label == "coversCEP",
     k==Inf) %>%
   #filter(stringr::str_detect(method, ".cov")) %>%
@@ -160,3 +160,15 @@ p <-
 p
 
 ggsave("Fig_3.pdf", height = 5, width = 10)
+
+covrates.verbal <-
+dat.cov %>% filter(
+  method == c("Calibration Bands"),
+  n %in% seq(9,15,2),
+  cov.rate != 1
+  )
+covrates.verbal
+# 212 coloured panels
+# 33 are != 1
+# We observe coverage rates between 0.998 and 1, with the majority of 212-33= 179 out of the 212 displayed coverage values being exactly one.
+

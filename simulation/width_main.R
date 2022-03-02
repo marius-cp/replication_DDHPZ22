@@ -183,7 +183,7 @@ w <-
   theme_bw()+
   theme(
     aspect.ratio=5/5,
-    legend.position = "bottom",
+    legend.position = "none",#"bottom",
     legend.text = element_text(
       size = 10,
       colour = "black",
@@ -218,4 +218,4 @@ w <-
     linetype = guide_legend(nrow = 1, title = "Band              ")
   )
 w
-ggsave("Fig_4_bottom.pdf", w, height = 5, width = 10)
+ggsave("Fig_4_bottom.pdf", w, height = 4.75, width = 10)

@@ -105,7 +105,7 @@ p <-
   facet_grid(.~misspec)+
   theme_bw()+
   theme(
-    legend.position = "bottom",
+    legend.position = "none",#"bottom",
     legend.text = element_text(
       size = 10,
       colour = "black",
@@ -145,5 +145,5 @@ p <-
 p
 
 
-ggsave("Fig_2.pdf", width = 10, height = 3.25)
+ggsave("Fig_2.pdf", width = 10, height = 3)
 
