@@ -20,7 +20,7 @@ library(calibrationband)
 # set of sample sizes
 n.set <- 2^seq(9,15,1)
 # restictions on the number of unique prediction values
-k.set <- c(20, Inf)
+k.set <- c(Inf)
 # misspecification set
 s.set <- seq(0,1,.1)
 # DGP (functional form of misspecification)
@@ -42,19 +42,14 @@ al = .05
 
 # set up parallel
 core.max <- 60
-cl <-  min(parallel::detectCores()-1, core.max)
-#registerDoMC(cores=cl)
-#getDoParWorkers()
-
 cl <- makeCluster(min(parallel::detectCores()-1, core.max) )
 registerDoParallel(cl)
-
 start.time <- Sys.time()
 
 MCsim <- foreach(i = 1:1000,
                  .errorhandling = "pass",
-                 .packages=c("calibrationband", "givitiR",
-                             "dplyr", "tibble", "logitnorm"
+                 .packages=c(
+                   "calibrationband", "givitiR", "dplyr", "tibble", "logitnorm"
                              )
                  )%dopar%{
                    df <- tibble()
@@ -98,12 +93,9 @@ MCsim <- foreach(i = 1:1000,
                            } else if (misspec=="DGJ") {
                              p <- function(x,s){p = x^(1-s);return(p)}
                              dat <- tibble(pr=x, s=s, cep = p(pr,s), y=rbinom(n,1,cep))%>% arrange(pr)
-                           } else if (misspec=="kink") {#kink
-                             #s=.5
+                           } else if (misspec=="kink") {
                              pc <- approxfun(y = c(0, 0.2, 1), x = c(0, 0.2+0.8*s , 1), ties = min)
                              dat <- tibble(pr=x,s=s, cep = pc(pr), y=rbinom(n,1,cep))%>% arrange(pr)
-                             #plot(y=p,x=pr)
-                             #abline(a=0,b=1)
                            } else if (misspec=="disc") {
                              p <- function(x,s){
                                p= as.numeric(x<=.1|x>=.9)*x + as.numeric(x>.1 & x<.9)*((s/2)+x*(.5-s/2)/.5)
@@ -155,7 +147,7 @@ MCsim <- foreach(i = 1:1000,
                                     lwr = belt$cbBoundByConfLevel[[1]]$L
                              ) %>%
                              filter(
-                               x_ >= min(dat$pr)  & x_ <= max(dat$pr) # cut at lowest and highest fcast value
+                               x_ >= min(dat$pr)  & x_ <= max(dat$pr) # cut at lowest and highest fcast value, giviti does that by default
                              ) %>%
                              mutate(
                                s=s,
@@ -163,13 +155,13 @@ MCsim <- foreach(i = 1:1000,
                                condp.at.x = ifelse(misspec=="kink", pc(x_), p(x_,s)),
                                diag.in.band = ifelse(x_ <= upr & x_ >= lwr, 1, 0),#=1 if in
                                cep.in.band = ifelse(upr >= condp.at.x & lwr <= condp.at.x,1,0),#=1 if in
-                               width = upr - lwr) %>%
+                               width = upr - lwr
+                               ) %>%
                              summarise(
                                diag.in.band = all(diag.in.band==1),
                                cep.in.band = all(cep.in.band==1),
                                avg.width01 = mean(width)
                              )
-
 
 
                            out.givit <-
@@ -223,6 +215,28 @@ dat <-do.call("rbind", out)
 dat
 
 
-#dat %>% filter(method != "GiViTI") %>% filter(label=="coversCEP") %>% summarise(mean(value))
 
-saveRDS(MCsim, file = paste("sim_xdist_",dist.x,".rds", sep = ""))
+saveRDS(MCsim, file = paste("../../sim_xdist_",dist.x,".rds", sep = ""))
+saveRDS(dat, file = paste("../../sim_rbind_xdist_",dist.x,".rds", sep = ""))
+
+
+Fig_3 <- dat %>%
+  filter(k==Inf) %>%
+  select(!k) %>%
+  filter(
+    label=="coversCEP",
+    method %in% c("round","GiViTI")
+  )
+saveRDS(Fig_3 , file = "Fig_3.RDS")
+
+
+Fig_4 <- dat %>%
+  filter(k==Inf) %>%
+  select(!k) %>%
+  filter(
+    s==.5,
+    label!="coversCEP",
+    method %in% c("round.nc","YB")
+  )
+saveRDS(Fig_4, file = "Fig_4.RDS")
+

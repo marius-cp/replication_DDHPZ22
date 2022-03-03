@@ -3,29 +3,24 @@ setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 library(dplyr)
 library(ggplot2)
 
-dat <- readRDS("../../sim_data/sim_xdist_A_unif.RDS")
-check <- sapply(dat, function(x) inherits(x, 'error'))
-out <- dat[!check]
-dat[check]
-dat <-do.call("rbind", out)
-dat
+#dat <- readRDS("../../sim_data/sim_rbind_xdist_unif.RDS")
 
-dat <- readRDS("../../sim_data/sim_rbind_xdist_unif.RDS")
+
+dat <- readRDS("Fig_4.RDS")
+
+
 
 # avg width full interval ----
-s_=0.5
-
 dat.w01 <-
   dat %>%
   filter(
-    s==s_,
     label == "width01"
     ) %>%
   group_by(
-    dist.x,
+    #dist.x,
     n,
-    k,
-    s,
+    #k,
+    #s,
     setup,
     method
     ) %>%
@@ -53,13 +48,9 @@ dat.w01 <-
     )
   )
 
-k_=Inf
 
 wid.01 <-
-  ggplot(dat.w01%>%
-           filter(
-             k==k_ & Band%in%c("Non-Crossing Calibration Bands", "YB") )
-         )+
+  ggplot(dat.w01)+
   geom_line(
     aes(
       y=avg_width, x=n,
@@ -112,23 +103,20 @@ wid.01
 ggsave("Fig_4_top.pdf", wid.01, height = 3, width = 10)
 
 # width per x ----
-s_=.5
-k_=Inf
+
 n_set = c(8192,32768)
 
 dat.wx <-
   dat %>%
   filter(
-    s==s_,
     label == "width",
-    k == k_,
     n %in% n_set
   ) %>%
   group_by(
     dist.x,
     n,
-    k,
-    s,
+    #k,
+    #s,
     setup,
     method,
     x
@@ -165,11 +153,7 @@ sample_sizes = c(
 )
 
 w <-
-  ggplot(dat.wx %>%
-           filter(
-             k==k_ & Band%in%c("Non-Crossing Calibration Bands", "YB")
-             )
-         )+
+  ggplot(dat.wx)+
   geom_line(
     aes(
       x=x, y=avg_width,

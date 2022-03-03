@@ -4,14 +4,7 @@ setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 library(dplyr)
 library(ggplot2)
 
-dat <- readRDS("../../sim_data/sim_xdist_unif.RDS")
-check <- sapply(dat, function(x) inherits(x, 'error'))
-out <- dat[!check]
-dat[check] # GIVITI fails 6 times
-dat <-do.call("rbind", out)
-dat
-
-dat <- readRDS("../../sim_data/sim_rbind_xdist_unif.RDS")
+dat <- readRDS("Fig_3.RDS")
 
 # coverage ---------------------------------------------------------------------
 
@@ -21,15 +14,12 @@ dat.cov <-
     n%in%c(2^seq(9,15,2))
     ) %>%
   filter(
-    !(setup == "Step" & s== 0),
-    label == "coversCEP",
-    k==Inf) %>%
-  #filter(stringr::str_detect(method, ".cov")) %>%
-  #tidyr::pivot_wider(names_from = method, values_from = value) %>%
+    !(setup == "Step" & s== 0)
+    ) %>%
   group_by(
-    dist.x,
+    #dist.x,
     n,
-    k,
+    #k,
     s,
     setup,
     method
@@ -51,7 +41,6 @@ dat.cov <-
       method,
       round = "Calibration Bands",
       round.nc = "NC Calibration Bands",
-      #YB.cov = "YB",
       YB = "YB",
       GiViTI = "GiViTI"
       ),
@@ -70,9 +59,9 @@ dat.cov
 relevant.values <-
   dat.cov %>%
   group_by(
-    dist.x,
+    #dist.x,
     setup,
-    k
+    #k
     ) %>%
   summarise(
     maxN=max(n),
@@ -83,7 +72,7 @@ relevant.values <-
 relevant.values
 
 p <-
-  ggplot(dat.cov %>% filter(method %in% c("Calibration Bands","GiViTI")))+
+  ggplot(dat.cov)+
   geom_tile(
     aes(x=n,y=s,fill = Coverage)
     )+
@@ -143,7 +132,7 @@ p <-
     breaks = seq(0, 1, 0.2)
   )+
   geom_rect(
-    data=relevant.values %>% filter(k==Inf & dist.x=="unif"),
+    data=relevant.values,
     mapping=aes(
       ymin=minS-.05, ymax=maxS+.05,
       xmin=minN-1, xmax=maxN+1
