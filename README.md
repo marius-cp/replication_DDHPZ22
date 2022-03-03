@@ -16,8 +16,10 @@ library(calibrationband)
 ### Simulations
 
 All graphs in chapter 5 can be replicated based on the code in the
-folder `simulation`. The simulation results can be obtained using the
-script `simulation.R`.
+folder `simulation`. The simulation results can be obtained by running
+the script `simulation.R`. The simulation output necessary to replicate
+the results in Figures 3 and 4 is provided in `Fig_3.RDS` and
+`Fig_4.RDS`.
 
 ### Application
 
@@ -34,4 +36,4 @@ the data (randomly split into a test and training set) is provided in
 <img src="application/Fig_readme.png" width="525" />
 </p>
 
-All plots were created with the `calibrationband` library.
+All plots were created using the `calibrationband` library.

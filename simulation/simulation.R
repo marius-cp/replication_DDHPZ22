@@ -2,18 +2,18 @@ rm(list=ls())
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
 library(dplyr)
-library(logitnorm)
-library(doMC)
 library(doParallel)
 library(givitiR)
-library(ggplot2)# delete when ggplot2:geom_poly...
+library(foreach)
 source("helpers.R")
+
 # install calibrationband library
-devtools::install_github("https://github.com/marius-cp/calibrationband"
-                         ,ref="main"
-                         # insert your access token below
-                         ,auth_token = "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"#"5514ebdc4ba3a82b44b3298be724b8369dae5bc3"
-                         , dependencies = T)
+devtools::install_github(
+  "https://github.com/marius-cp/calibrationband"
+  ,ref="main"
+  ,auth_token = "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"
+  ,dependencies = T
+  )
 
 library(calibrationband)
 
@@ -87,7 +87,7 @@ MCsim <- foreach(i = 1:1000,
                            } else if (misspec=="Step"){
                              p <- function(x,s){
                                sstar = 15-10*s
-                               p = 1/(2*sstar)+(1/(sstar))*floor(sstar*x) - as.numeric(x==1)*(1/(sstar))#( 1/(2*s)+(1/s)*floor(s*x))
+                               p = 1/(2*sstar)+(1/(sstar))*floor(sstar*x) - as.numeric(x==1)*(1/(sstar))
                                return(p)}
                              dat <- tibble(pr=x, s=s, cep = p(pr,s), y=rbinom(n,1,cep))%>% arrange(pr)
                            } else if (misspec=="DGJ") {
@@ -128,20 +128,11 @@ MCsim <- foreach(i = 1:1000,
                                  )$out
                            )
 
-                           #all.equal(
-                           #bandinfo(obj=round, dist.x = dist.x, s=s, k=k, setup = misspec, n=n)$band.info$cep.at.x,
-                           #pc(round$bands$x[ifelse(round$bands$x >= min(dat$pr)  & round$bands$x <= max(dat$pr) , TRUE,FALSE)])
-                           #)
-                          #all_equal(round$bands, round.nc$bands)
 
-
-
-                           # function for GIVITI
+                           # GIVITI
                            belt <- givitiCalibrationBelt(o=dat$y, e=dat$pr, devel = "external", confLevels = c(1-al))
 
-                           # sometimes shots the error (kink,s=.4, beta n=2048):
-                           # Error in optim(par = theta, fn = fun, gr = grad, control = control.optim,  : initial value in 'vmmin' is not finite
-                           givit <-
+                          givit <-
                              tibble(x_=belt$seqP,
                                     upr = belt$cbBoundByConfLevel[[1]]$U,
                                     lwr = belt$cbBoundByConfLevel[[1]]$L
@@ -198,8 +189,7 @@ MCsim <- foreach(i = 1:1000,
 
                          }# misspec loop
                        }# s loop
-                       #  }#dist loop
-                     }#k loop
+                      }#k loop
                    }#n loop
                    df
                  } # par loop

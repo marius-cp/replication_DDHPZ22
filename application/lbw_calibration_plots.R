@@ -27,7 +27,6 @@ mod1 <- glm(
   )
 summary(mod1)
 
-# pred-real pairs test (OUT-OF-SAMPLE PREDICTION) %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 mod1.pairs.ts <-
   tibble(
     "Y" = bw_test$lbw,
@@ -49,19 +48,20 @@ summary(fig1)
 print(fig1)
 
 fig1a <-
-autoplot(fig1, approx.equi = 1000 ,cut.bands = T)
+autoplot(fig1, approx.equi = 1000 ,cut.bands = T)+
+  xlab(expression(paste('Forecast value ', italic(x))))+
+  ylab(expression(paste('Calibration curve ', italic(p))))
+
 fig1a
 
 
 fig1b <-
   autoplot(fig1, approx.equi = 1000,cut.bands = T)+
-  #geom_line(aes(basep$x_upr, basep$upr), color = "green")+
-  #geom_line(aes(basep$x_lwr, basep$lwr), color = "green")+
   coord_cartesian(xlim=c(0,.1),ylim=c(0,.15))+
-  theme(aspect.ratio=1)
-  #geom_segment(aes(x=0,xend=.1,y=0,yend=.1), alpha=.2)
-  #geom_abline(aes(intercept  = .05, slope = 1))+
-  #geom_abline(aes(intercept  = -.05, slope = 1))
+  theme(aspect.ratio=1)+
+  xlab(expression(paste('Forecast value ', italic(x))))+
+  ylab(expression(paste('Calibration curve ', italic(p))))
+
 
 fig1b
 
@@ -88,7 +88,7 @@ HL.OOS.mod1$statistic # = 231.8554
 1 - pchisq(HL.OOS.mod1$statistic, 9) # =0
 
 # Fig 5 ----
-# a ----
+## a ----
 mod2 <-
   glm(
     lbw ~ mager+ I(mager^2) + sex +  bmi + smoke + r1_diabetis +
@@ -115,7 +115,9 @@ mod2.fig5 <- calibration_bands(
 mod2.fig5
 
 Fig_5_left <-
-autoplot(mod2.fig5, approx.equi = 1000 ,cut.bands = T)
+autoplot(mod2.fig5, approx.equi = 1000 ,cut.bands = T)+
+  xlab(expression(paste('Forecast value ', italic(x))))+
+  ylab(expression(paste('Calibration curve ', italic(p))))
 
 mod2.pairs.tr <-
   tibble(
@@ -139,6 +141,7 @@ mod3 <-
   )
 summary(mod3)
 
+## b ----
 mod3.pairs.ts <- tibble(
   "Y" = bw_test$lbw,
   "P" = predict(mod3,newdata = bw_test, type='response')
@@ -156,7 +159,9 @@ mod3.fig5 <- calibration_bands(
 mod3.fig5
 
 Fig_5_right <-
-  autoplot(mod3.fig5, approx.equi = 1000 ,cut.bands = T)
+  autoplot(mod3.fig5, approx.equi = 1000 ,cut.bands = T)+
+  xlab(expression(paste('Forecast value ', italic(x))))+
+  ylab(expression(paste('Calibration curve ', italic(p))))
 
 mod3.pairs.tr <-
   tibble(
@@ -188,3 +193,30 @@ readme <-
 readme
 
 ggsave("Fig_readme.png", readme, height = 4, width = 8)
+
+
+# other ----
+# compare number of obs
+bind_rows(
+  mod1.pairs.ts %>% mutate(M=1),
+  mod2.pairs.ts %>% mutate(M=2),
+  mod3.pairs.ts %>% mutate(M=3)
+  ) %>%
+  mutate(
+    int = cut(
+      P,
+      c(0, .03, .04, 0.2, 1),
+      include.lowest = TRUE
+    )
+  ) %>%
+  group_by(M,int) %>%
+  count() %>%
+  ungroup() %>%
+  tidyr::pivot_wider(names_from = int, values_from = n)
+
+# # A tibble: 3 x 5
+# M `[0,0.03]` `(0.03,0.04]` `(0.04,0.2]` `(0.2,1]`
+# <dbl>      <int>         <int>        <int>     <int>
+#   1     1     507807        230087       148680    113426
+#   2     2     501514        104782       303276     90428
+#   3     3       1416        885184          165    113235

@@ -135,8 +135,8 @@ p <-
       title = expression(paste('shape parameter ', italic(s), ':     '))
     )
     )+
-  xlab(expression(paste('forecast value ', italic(x))))+
-  ylab(expression(paste('calibration curve ', italic(p))))+
+  xlab(expression(paste('Forecast value ', italic(x))))+
+  ylab(expression(paste('Calibration curve ', italic(p))))+
   scale_linetype_manual(values=c( "solid", "dotted", "12"))+
   scale_color_brewer(palette = "Set1")+
   coord_fixed(ratio =1)

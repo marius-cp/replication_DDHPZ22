@@ -95,8 +95,8 @@ wid.01 <-
     color = guide_legend(nrow = 1, title = "Band              "),
     linetype = guide_legend(nrow = 1, title = "Band              ")
   ) +
-  xlab(expression(paste('sample size ', italic(n))))+
-  ylab("average width")
+  xlab(expression(paste('Sample size ', italic(n))))+
+  ylab("Average width")
 
 
 wid.01
@@ -193,8 +193,8 @@ w <-
     legend.spacing.x = unit(0.075, "cm"),
     plot.margin=unit(c(-.5,.05,-.6,.05), "null")
   )+
-  xlab(expression(paste('forecast value ', italic(x))))+
-  ylab("average width")+
+  xlab(expression(paste('Forecast value ', italic(x))))+
+  ylab("Average width")+
   scale_linetype_manual(values=c("solid","22"))+
   scale_color_brewer(palette = "Set1")+
   guides(
@@ -203,3 +203,53 @@ w <-
   )
 w
 ggsave("Fig_4_bottom.pdf", w, height = 4.75, width = 10)
+
+# other stuff  ----
+# verbal stuff on difference between round and nc.round
+dat <- readRDS("../../sim_data/sim_rbind_xdist_unif.RDS")
+
+
+dif.in.round <-
+  dat %>%
+  filter(
+    method%in%c("round","round.nc"),
+    label == "width",
+    k==Inf
+  ) %>%
+  tidyr::pivot_wider(
+    names_from = method,
+    values_from = value
+  ) %>%
+  mutate(
+    dif.round = as.numeric(round!=round.nc),
+    relativ = round.nc/round,
+    n=log2(n)
+  )
+
+dif.in.round
+
+dif.in.round %>%
+  filter(
+    dif.round ==1
+    )%>%
+  mutate(
+    "distrinct draws" = as.factor(n_distinct(seed)),
+    s= as.factor(s)
+    ) %>%
+  ggplot(
+    aes(x=n,y=(relativ), shape = `distrinct draws`, color = s)
+    )+
+  geom_point()+
+  facet_grid(k~setup, scales = "free_y")+
+  scale_x_continuous(
+    breaks = seq(min(log2(dat$n)),max(log2(dat$n)),2),
+    labels = seq(min(log2(dat$n)),max(log2(dat$n)),2)
+  )
+
+
+dif.in.round %>%
+  group_by(dif.round) %>%
+  count()
+#  a difference between nc.round and round is observed for 35 of 9393265 x-values
+#  the differences occur in 5 of 1000 distinct simulation draws, only for disc and step and only for shape parameters s=0.9 and s=1
+

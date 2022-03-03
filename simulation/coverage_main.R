@@ -143,9 +143,9 @@ p <-
     alpha=.5
     )+
   guides(fill = guide_legend(nrow = 1, title = "Coverage rate   "))+
-  xlab(expression(paste('sample size ', italic(n))))+
-  ylab(expression(paste('shape parameter ', italic(s))))
-#ggtitle(paste(dist_, ",","K = ",k_, sep = ""))
+  xlab(expression(paste('Sample size ', italic(n))))+
+  ylab(expression(paste('Shape parameter ', italic(s))))
+
 p
 
 ggsave("Fig_3.pdf", height = 5, width = 10)
