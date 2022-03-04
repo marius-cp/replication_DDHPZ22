@@ -6,12 +6,8 @@ library(ggpubr)
 library(ResourceSelection)
 
 # install calibrationband library
-devtools::install_github("https://github.com/marius-cp/calibrationband"
-                         ,ref="main"
-                         # insert your access token below
-                         ,auth_token = "5514ebdc4ba3a82b44b3298be724b8369dae5bc3"
-                         ,dependencies = T
-)
+# install.packages("devtools")
+devtools::install_github("marius-cp/calibrationband")
 library(calibrationband)
 
 bw_train <- readRDS("bw_train.RDS")
@@ -41,11 +37,6 @@ fig1 <- calibration_bands(
   digits = 3,
   nc = T
   )
-
-
-basep <- plot(fig1)
-summary(fig1)
-print(fig1)
 
 fig1a <-
 autoplot(fig1, approx.equi = 1000 ,cut.bands = T)+

@@ -8,13 +8,8 @@ library(foreach)
 source("helpers.R")
 
 # install calibrationband library
-devtools::install_github(
-  "https://github.com/marius-cp/calibrationband"
-  ,ref="main"
-  ,auth_token = "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"
-  ,dependencies = T
-  )
-
+# install.packages("devtools")
+devtools::install_github("marius-cp/calibrationband")
 library(calibrationband)
 
 # set of sample sizes
