@@ -14,7 +14,7 @@ library(calibrationband)
 
 # set of sample sizes
 n.set <- 2^seq(9,15,1)
-# restictions on the number of unique prediction values
+# restrictions on the number of unique prediction values
 k.set <- c(Inf)
 # misspecification set
 s.set <- seq(0,1,.1)
@@ -28,15 +28,8 @@ b.param.2 <- 2
 # significance level
 al = .05
 
-# s=.5
-# misspec = "S"
-# k=Inf
-# dist.x= "unif"
-# n=10000
-
-
 # set up parallel
-core.max <- 60
+core.max <- 80
 cl <- makeCluster(min(parallel::detectCores()-1, core.max) )
 registerDoParallel(cl)
 start.time <- Sys.time()
@@ -190,7 +183,7 @@ MCsim <- foreach(i = 1:1000,
                  } # par loop
 stopCluster(cl)
 end.time <- Sys.time()
-(run.time <- end.time-start.time)# Time difference of 1.217456 days, 60 cores
+(run.time <- end.time-start.time)# Time difference of 18.46819 hours, 80 cores
 
 
 check <- sapply(MCsim, function(x) inherits(x, 'error'))
