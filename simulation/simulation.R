@@ -194,8 +194,8 @@ dat
 
 
 
-saveRDS(MCsim, file = paste("../../sim_xdist_",dist.x,".rds", sep = ""))
-saveRDS(dat, file = paste("../../sim_rbind_xdist_",dist.x,".rds", sep = ""))
+saveRDS(MCsim, file = paste("sim_xdist_",dist.x,".rds", sep = ""))
+saveRDS(dat, file = paste("sim_rbind_xdist_",dist.x,".rds", sep = ""))
 
 
 Fig_3 <- dat %>%
