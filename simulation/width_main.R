@@ -3,9 +3,6 @@ setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 library(dplyr)
 library(ggplot2)
 
-#dat <- readRDS("../../sim_data/sim_rbind_xdist_unif.RDS")
-
-
 dat <- readRDS("Fig_4.RDS")
 
 
@@ -146,7 +143,7 @@ dat.wx <-
   )
 
 sample_sizes = c(
-  '512' =  "n==512", #  '512' =  "bold(n)==bold(512)",
+  '512' =  "n==512",
   '2048' = "n==2048",
   '8192' = "n==8192",
   '32768' = "n==32768"
@@ -206,7 +203,7 @@ ggsave("Fig_4_bottom.pdf", w, height = 4.75, width = 10)
 
 # other stuff  ----
 # verbal stuff on difference between round and nc.round
-dat <- readRDS("../../sim_data/sim_rbind_xdist_unif.RDS")
+dat <- readRDS("sim_rbind_xdist_unif.RDS")
 
 
 dif.in.round <-
