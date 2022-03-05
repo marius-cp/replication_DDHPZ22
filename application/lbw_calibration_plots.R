@@ -174,8 +174,6 @@ Fig_5
 
 ggsave("Fig_5.pdf", Fig_5, height = 4, width = 8)
 
-Fig_1
-
 readme <-
   ggarrange(
     fig1a + ggtitle("Figure 1 left"),

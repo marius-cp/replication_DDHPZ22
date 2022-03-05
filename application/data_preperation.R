@@ -18,7 +18,7 @@ educ = c(
   "7"="msc"          ,  "8"="dr"
   )
 
-bw_data_raw <- read_dta("../../natl2017.dta.zip") # insert path to zipped data set here
+bw_data_raw <- read_dta("natl2017.dta.zip") # insert path to zipped data set here
 
 
 
@@ -130,7 +130,6 @@ bw <-
     more = as.numeric(dplural > 2),
     inf = as.numeric(ip_gon == "Y" | ip_syph == "Y" |ip_chlam== "Y" | ip_hepatb == "Y" |ip_hepatc== "Y") )
 
-set.seed(123456)
 set.seed(1234567)
 random.sort <-
   bw%>%
