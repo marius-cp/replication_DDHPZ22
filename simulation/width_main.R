@@ -53,9 +53,9 @@ wid.01 <-
       y=avg_width, x=n,
         color=Band, linetype=Band
       ),
-    size=1.05
+    size=1
     )+
-  facet_grid(.~setup)+
+  facet_grid(1~setup)+
   theme_bw()+
   theme(
     aspect.ratio = 1,
@@ -80,7 +80,8 @@ wid.01 <-
       ),
     strip.text = element_text(face = "bold",
                               size = 10
-                              )
+                              ),
+    strip.text.y = element_blank()
     )+
   scale_linetype_manual(values=c("solid","22"))+
   scale_color_brewer(palette = "Set1")+
@@ -156,14 +157,14 @@ w <-
       x=x, y=avg_width,
       color=Band, linetype=Band
       ),
-    size=.75
+    size=1
     )+
   xlim(c(0,1))+
   facet_grid(n~setup,
              labeller = labeller(n  = as_labeller(sample_sizes, label_parsed)))+
   theme_bw()+
   theme(
-    aspect.ratio=5/5,
+    aspect.ratio=1,
     legend.position = "none",#"bottom",
     legend.text = element_text(
       size = 10,
@@ -199,6 +200,7 @@ w <-
     linetype = guide_legend(nrow = 1, title = "Band              ")
   )
 w
+
 ggsave("Fig_4_bottom.pdf", w, height = 4.75, width = 10)
 
 # other stuff  ----
