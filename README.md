@@ -3,7 +3,7 @@
 
 T. Dimitriadis, L. Dümbgen, A. Henzi, M. Puke, and J. Ziegel. Honest
 calibration assessment for binary outcome predictions. *Preprint*,
-[*arXiv:…*](https://doi.org/...), 2022.
+[*arXiv:2203.04065*](https://arxiv.org/abs/2203.04065), 2022.
 
 ### Associated repository
 
