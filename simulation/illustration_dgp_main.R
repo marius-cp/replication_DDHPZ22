@@ -3,7 +3,7 @@ setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 library(dplyr)
 library(ggplot2)
 
-misspec.set <- c("S", "Step", "DGJ", "kink", "disc")
+misspec.set <- c("S", "Step", "DGJ", "kink", "disc", "noiso")
 s.set <- c(0.3,0.7)
 b.param.1 <- .5
 b.param.2 <- 2
@@ -38,7 +38,16 @@ for (s in s.set) {
               }
             y <- rbinom(n, 1, p(x,s))
             pr = x
-            } else {
+          } else if (misspec == "noiso"){
+            p <- function(x,s){
+              a<-(2*s-1)# diagonal if -1, "max" non iso -1
+              c<-4*(a+1)
+              p =.5-a*(x-.5)+c*(x-.5)^3
+              return(p)
+              }
+        dat <- tibble(pr=x, s=s, cep = p(pr,s), y=rbinom(n,1,cep))%>% arrange(pr)
+      }
+     else {
               pc <- approxfun(y = c(0, 0.2, 1), x = c(0, 0.2+0.8*s , 1), ties = min)
               p <- pc(x)
               pr <- x
@@ -82,7 +91,8 @@ df.p <-
       S = "S-shaped",
       kink = "Kink",
       disc = "Disc",
-      Step = "Step"
+      Step = "Step",
+      noiso = "Curved"
     )
   )
 
@@ -92,7 +102,7 @@ p <-
   ggplot(df.p)+
   geom_abline(intercept=0,slope=1, colour ="gray", size = .5)+
   geom_line(df.p %>%
-              filter(misspec == "S-shaped" | misspec == "Monomial" | misspec == "Kink"),
+              filter(misspec == "S-shaped" | misspec == "Monomial" | misspec == "Kink" | misspec == "Curved"),
             mapping = aes(x=pr,y=p, colour = s,  linetype=s), size = si)+
   geom_line(df.p %>% filter(misspec == "Disc" & pr <.1),
             mapping = aes(x=pr,y=p, colour = s,  linetype=s), size = si)+
@@ -145,5 +155,5 @@ p <-
 p
 
 
-ggsave("Fig_2.pdf", width = 10, height = 3)
+ggsave("Fig_2.pdf", width = (10+2.5), height = 3)
 

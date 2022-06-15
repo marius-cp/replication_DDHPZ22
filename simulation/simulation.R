@@ -19,7 +19,7 @@ k.set <- c(Inf)
 # misspecification set
 s.set <- seq(0,1,.1)
 # DGP (functional form of misspecification)
-misspec.set <-  c("S", "Step", "DGJ", "kink", "disc")
+misspec.set <-  c("S", "Step", "DGJ", "kink", "disc", "noiso")
 # distribution of prediction values (unif, logit-normal, beta)
 dist.x <-"unif"
 # parameters for beta distribution
@@ -91,6 +91,13 @@ MCsim <- foreach(i = 1:1000,
 
                              dat <- tibble(pr=x,s=s, cep = p(pr,s), y=rbinom(n,1,cep))%>% arrange(pr)
 
+                           } else if (misspec == "noiso"){
+                             p <- function(x,s){
+                               a<-(2*s-1)# diagonal if -1, "max" non iso -1
+                               c<-4*(a+1)
+                               p =.5-a*(x-.5)+c*(x-.5)^3
+                               return(p)}
+                             dat <- tibble(pr=x, s=s, cep = p(pr,s), y=rbinom(n,1,cep))%>% arrange(pr)
                            }
 
                            round <-
