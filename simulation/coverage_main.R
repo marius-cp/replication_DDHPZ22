@@ -51,6 +51,7 @@ dat.cov <-
       kink = "Kink",
       disc = "Disc",
       Step = "Step",
+      noiso = "Wave",
       .ordered = T
       )
     )
