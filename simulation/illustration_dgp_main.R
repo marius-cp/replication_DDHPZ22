@@ -92,7 +92,7 @@ df.p <-
       kink = "Kink",
       disc = "Disc",
       Step = "Step",
-      noiso = "Curved"
+      noiso = "Wave"
     )
   )
 
@@ -102,7 +102,7 @@ p <-
   ggplot(df.p)+
   geom_abline(intercept=0,slope=1, colour ="gray", size = .5)+
   geom_line(df.p %>%
-              filter(misspec == "S-shaped" | misspec == "Monomial" | misspec == "Kink" | misspec == "Curved"),
+              filter(misspec == "S-shaped" | misspec == "Monomial" | misspec == "Kink" | misspec == "Wave"),
             mapping = aes(x=pr,y=p, colour = s,  linetype=s), size = si)+
   geom_line(df.p %>% filter(misspec == "Disc" & pr <.1),
             mapping = aes(x=pr,y=p, colour = s,  linetype=s), size = si)+
