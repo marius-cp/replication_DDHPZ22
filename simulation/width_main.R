@@ -41,6 +41,7 @@ dat.w01 <-
       kink = "Kink",
       disc = "Disc",
       Step = "Step",
+      noiso = "Wave",
       .ordered = T
     )
   )
@@ -139,6 +140,7 @@ dat.wx <-
       kink = "Kink",
       disc = "Disc",
       Step = "Step",
+      noiso = "Wave",
       .ordered = T
     )
   )
@@ -247,8 +249,9 @@ dif.in.round %>%
 
 
 dif.in.round %>%
-  group_by(dif.round) %>%
+  group_by(dif.round, setup) %>%
   count()
+#  just consider the isotonc DGPs here:
 #  a difference between nc.round and round is observed for 35 of 9393265 x-values
 #  the differences occur in 5 of 1000 distinct simulation draws, only for disc and step and only for shape parameters s=0.9 and s=1
 
