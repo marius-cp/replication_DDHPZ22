@@ -190,7 +190,7 @@ MCsim <- foreach(i = 1:1000,
                  } # par loop
 stopCluster(cl)
 end.time <- Sys.time()
-(run.time <- end.time-start.time)# Time difference of 18.46819 hours, 80 cores
+(run.time <- end.time-start.time)# Time difference of 23.96034 hours, 80 cores
 
 
 check <- sapply(MCsim, function(x) inherits(x, 'error'))
