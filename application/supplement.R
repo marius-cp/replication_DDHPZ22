@@ -72,3 +72,19 @@ standardBands <- calibration_bands(
 end.time <- Sys.time()
 (run.time <- end.time-start.time)
 save(standardBands, file = "supplement_method_standard_mod1.Rdata")
+
+
+
+autoplot(fig1)+
+  geom_line(mapping = aes(standardBands$bands$x,standardBands$bands$lwr),color="green")+
+  geom_line(mapping = aes(standardBands$bands$x,standardBands$bands$upr), color="green")+
+  coord_cartesian(xlim=c(0,.1),ylim=c(0,.15))+
+  theme(aspect.ratio=1)+
+  xlab(expression(paste('Forecast value ', italic(x))))+
+  ylab(expression(paste('Calibration curve ', italic(p))))
+
+ggsave("Fig_2_supplement.pdf", width = 4, height = 4)
+
+
+
+
