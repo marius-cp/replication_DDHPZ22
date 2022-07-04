@@ -19,7 +19,7 @@ k.set <- c(Inf)
 # misspecification set
 s.set <- seq(0,1,.1)
 # DGP (functional form of misspecification)
-misspec.set <-  c("S", "Step", "DGJ", "kink", "disc", "noiso")
+misspec.set <-  c("S", "Step", "DGJ", "kink", "noiso")#"disc
 # distribution of prediction values (unif, logit-normal, beta)
 dist.x <-"unif"
 # parameters for beta distribution
