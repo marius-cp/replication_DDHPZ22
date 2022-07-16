@@ -24,7 +24,8 @@ bandinfo = function(obj,
     summarise(
       #diag.in.band = all(diag.in.band==1),
       cep.in.band = all(cep.in.band==1),
-      avg.width01 = mean(width)
+      avg.width01 = mean(width),
+      crossing = any(width <0)
     )
 
 
@@ -43,6 +44,7 @@ bandinfo = function(obj,
   out <-
     tibble(
       coversCEP = capture$cep.in.band,
+      crossing = capture$crossing,
       width01 = capture$avg.width01,
       #a.calibration = capture$diag.in.band
     ) %>%
