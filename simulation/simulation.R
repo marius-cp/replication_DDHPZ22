@@ -190,7 +190,7 @@ MCsim <- foreach(i = 1:1000,
                  } # par loop
 stopCluster(cl)
 end.time <- Sys.time()
-(run.time <- end.time-start.time)# Time difference of 23.96034 hours, 80 cores
+(run.time <- end.time-start.time)# Time difference of 17.3 hours, 80 cores
 
 
 check <- sapply(MCsim, function(x) inherits(x, 'error'))
@@ -224,4 +224,14 @@ Fig_4 <- dat %>%
     method %in% c("round.nc","YB")
   )
 saveRDS(Fig_4, file = "Fig_4.RDS")
+
+
+isotest <- dat %>%
+  filter(
+    label=="crossing",
+    method == "round"
+    ) %>%
+  select(!k)
+
+saveRDS(isotest, file = "isotest.RDS")
 
