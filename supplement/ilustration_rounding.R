@@ -85,15 +85,27 @@ plotdat <-
     p.dat(round2$bands) %>% mutate(K ="100", k = 100),
     #p.dat(round3$bands) %>% mutate(K ="1000"),
     p.dat(standard$bands) %>% mutate(K ="Inf", k = Inf)
+  ) %>%
+  mutate(
+    K = recode_factor(
+      K,
+      "Inf" = "K = Inf         ",
+      "1000" = "K = 1000         ",
+      "100" = "K = 100         ",
+      "20" = "K = 10         ",
+      #"YB 0" = "Yang & Baber      ",
+      .ordered = T
+    )
   )
+
 
 
 widthdat1 <-
   bind_cols(
-  plotdat  %>% group_by(k,x_lwr) %>% summarise(lwr=min(lwr)),
-  plotdat %>% group_by(k,x_upr) %>% summarise(upr=max(upr))
+  plotdat  %>% group_by(K,x_lwr) %>% summarise(lwr=min(lwr)),
+  plotdat %>% group_by(K,x_upr) %>% summarise(upr=max(upr))
   ) %>%
-  mutate(width = upr-lwr, x = x_lwr, "K" = k...1 ) %>%
+  mutate(width = upr-lwr, x = x_lwr, "K" = K...1 ) %>%
   ungroup()
 
 p_2 <-
@@ -103,16 +115,19 @@ p_2 <-
     ) %>%
   ggplot()+
   facet_wrap(id ~ ., scales = "free_x")+
-  geom_step(aes(x=x,y=width, color = as.factor(K), linetype = as.factor(K)), direction = "hv")+
+  geom_step(aes(x=x,y=width, color = as.factor(K...1), linetype = as.factor(K...1)), direction = "hv")+
   theme_bw()+
-  theme(aspect.ratio=1)+
+  theme(
+    aspect.ratio=1,
+    legend.position = "bottom"
+    )+
   scale_color_manual(
     values = c(RColorBrewer::brewer.pal(n=9,"YlOrRd")[(c(5,7))], "black" )
   )+
   scale_linetype_manual(
     values = c(11,21,31)
   )+
-  guides(color = guide_legend(title = "K"), linetype = guide_legend(title = "K"))+
+  guides(color = guide_legend(title = ""), linetype = guide_legend(title = ""))+
   xlab(expression(paste('Forecast value ', italic(x))))
 p_2
 
@@ -131,23 +146,29 @@ p_1 <-
   )+
   facet_wrap(id~., scales = "free_x")+
   geom_line(data = pcurve,mapping = aes(x=pr,y=cep), color = "darkgray")+
-  geom_line(mapping = aes(x=x_upr,y=upr,color=as.factor(k), linetype = as.factor(k)))+
-  geom_line(mapping=aes(x=x_lwr,y=lwr,color=as.factor(k), linetype = as.factor(k)))+
-  xlab(" ")+#xlab(expression(paste('Forecast value ', italic(x))))+
+  geom_line(mapping = aes(x=x_upr,y=upr,color=as.factor(K), linetype = as.factor(K)))+
+  geom_line(mapping=aes(x=x_lwr,y=lwr,color=as.factor(K), linetype = as.factor(K)))+
+  xlab(expression(paste('Forecast value ', italic(x))))+
   ylab(expression(paste('Calibration curve ', italic(p))))+
   theme_bw()+
-  theme(aspect.ratio=1)+
+  theme(
+    aspect.ratio=1,
+    legend.position = "bottom",
+    legend.key.width = unit(2.5, "line"),
+    legend.spacing.x = unit(.01, "cm")
+  )+
   scale_color_manual(
-    values = c(RColorBrewer::brewer.pal(n=9,"YlOrRd")[(c(5,7))], "black" )
+    values = c("black",RColorBrewer::brewer.pal(n=9,"YlOrRd")[(c(7,5))], "black" )
   )+
   scale_linetype_manual(
-    values = c(11,21,31)
+    values=c("solid","31","11")
   )+
-  guides(color = guide_legend(title = "K"), linetype = guide_legend(title = "K"))+
+  guides(color = guide_legend(title = ""), linetype = guide_legend(title = ""))+
   scale_y_continuous(
     breaks = c(0,.2,.4,.6,.8,1),
     labels= c(0,.2,.4,.6,.8,1)
   )
+
 
 
 p_1
@@ -155,4 +176,4 @@ p_1
 
 p <- ggpubr::ggarrange(p_1,p_2, nrow = 2, common.legend = T, legend = "bottom")
 p
-ggsave("Fig_S1.pdf", p, width = 8, height = 9)
+ggsave("Fig_S1.pdf", p_1, width = 8, height = 5)

@@ -195,7 +195,7 @@ dat %>%
       x=x, y=avg_width,
       color=method, linetype=method
     ),
-    size=1
+    #size=1
   )+
   xlim(c(0,1))+
   facet_grid(n~.#setup,
@@ -251,11 +251,11 @@ avg %>%
     transavg = lubridate::seconds_to_period(avg) %>% round(2),
     method = recode_factor(
       method,
-      "standard 0" = "K = Inf      ",
-      "round 3" = "K=10^3      ",
-      "round 2" = "K=10^2      ",
-      "round 1" = "K=10^1      ",
-      "YB 0" = "Yang & Baber      ",
+      "standard 0" = "K = Inf        ",
+      "round 3" = "K = 1000        ",
+      "round 2" = "K = 100        ",
+      "round 1" = "K = 10        ",
+      "YB 0" = "Yang & Baber        ",
       .ordered = T
     )
   )
@@ -264,7 +264,7 @@ pdat$method %>% unique()
 p_time <-
 ggplot(pdat)+
   geom_line(
-    aes(x=((n)),y=(avg),color = method, linetype = method), size =1
+    aes(x=((n)),y=(avg),color = method, linetype = method)#, size =1
   )+
   # geom_point(
   #   aes(x=((n)),y=(avg),color = method, #shape = method,
@@ -311,5 +311,5 @@ ggpubr::ggarrange(
   legend = "bottom"
 )
 
-ggsave("Fig_S2.pdf", width = 10, height = 6)
+ggsave("Fig_S2.pdf", width = 10, height = 5)
 
