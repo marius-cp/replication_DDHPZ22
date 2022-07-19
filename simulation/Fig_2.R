@@ -3,7 +3,7 @@ setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 library(dplyr)
 library(ggplot2)
 
-misspec.set <- c("S", "Step", "DGJ", "kink", "disc", "noiso")
+misspec.set <- c("S", "Step", "DGJ", "kink", "noiso")#"disc",
 s.set <- c(0.3,0.7)
 b.param.1 <- .5
 b.param.2 <- 2
@@ -155,5 +155,5 @@ p <-
 p
 
 
-ggsave("Fig_2.pdf", width = (10+2.5), height = 3)
+ggsave("Fig_2.pdf", width = (10), height = 3)
 

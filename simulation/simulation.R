@@ -210,7 +210,7 @@ Fig_3 <- dat %>%
   select(!k) %>%
   filter(
     label=="coversCEP",
-    method %in% c("round","GiViTI")
+    method %in% c("round","GiViTI", "YB")
   )
 saveRDS(Fig_3 , file = "Fig_3.RDS")
 
@@ -226,12 +226,12 @@ Fig_4 <- dat %>%
 saveRDS(Fig_4, file = "Fig_4.RDS")
 
 
-isotest <- dat %>%
+Tab_1 <- dat %>%
   filter(
     label=="crossing",
     method == "round"
     ) %>%
   select(!k)
 
-saveRDS(isotest, file = "isotest.RDS")
+saveRDS(Tab_1, file = "Tab_1.RDS")
 
