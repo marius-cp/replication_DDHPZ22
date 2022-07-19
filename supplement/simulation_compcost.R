@@ -14,13 +14,12 @@ devtools::install_github("marius-cp/calibrationband")
 library(calibrationband)
 
 # sim comp cost ----
-
-n.set <- 2^seq(9,13,1) #2^seq(9,14,1)# erst bloß bis 4000
+n.set <- 2^seq(9,14,1)
 misspec.set <- c("kink")
 al = .05
 
 # set up parallel
-core.max <- 100
+core.max <- 50
 cl <- makeCluster(min(parallel::detectCores()-1, core.max) )
 registerDoParallel(cl)
 start.time <- Sys.time()
@@ -151,13 +150,14 @@ saveRDS(dat,"simulation_compcost.rds")
 
 # width plot ----
 
-dat <- readRDS("simulation_compcost.rds")
+dat <- readRDS("simulation_compcost.rds") %>%
+  dplyr::filter(digits != 1)
 
 dat %>%
   filter(label == "width")
-#n_set = c(8192,16384)
 
-n_set = c(8192,4096)
+n_set = c(8192,16384)
+
 
 p_width <-
 dat %>%
@@ -205,18 +205,18 @@ dat %>%
   ylab("Average width")+
   scale_linetype_manual(values=c("solid","31","11","dotdash", 21))+
   scale_color_manual(
-  values = c("black",RColorBrewer::brewer.pal(n=9,"YlOrRd")[c(7,5,3)],"gray")
+  values = c("black",RColorBrewer::brewer.pal(n=9,"YlOrRd")[c(7,5)],"purple")
 )+
   theme_bw()+
  theme(
    legend.position = "bottom",
    legend.text = element_text(size = 10,
                               colour = "black",
-                              margin = margin(r = 12, unit = "pt")
+                              margin = margin(r = 15, unit = "pt")
    ),
    legend.title = element_text(size = 10),
-   legend.key.width = unit(2, "line"),
-   legend.spacing.x = unit(0.075, "cm")
+   legend.key.width = unit(3, "line"),
+   legend.spacing.x = unit(0.1, "cm")
   )+
   guides(
     color = guide_legend(nrow = 1, title = " "),
@@ -251,11 +251,11 @@ avg %>%
     transavg = lubridate::seconds_to_period(avg) %>% round(2),
     method = recode_factor(
       method,
-      "standard 0" = "standard, i.e. K = Inf",
-      "round 3" = "rounding with K=10^3",
-      "round 2" = "rounding with K=10^2",
-      "round 1" = "rounding with K=10^1",
-      "YB 0" = "Yang & Baber",
+      "standard 0" = "K = Inf      ",
+      "round 3" = "K=10^3      ",
+      "round 2" = "K=10^2      ",
+      "round 1" = "K=10^1      ",
+      "YB 0" = "Yang & Baber      ",
       .ordered = T
     )
   )
@@ -279,7 +279,7 @@ ggplot(pdat)+
     breaks = 2^seq(min(log2(pdat$n)),max(log2(pdat$n)),1),
     labels= 2^seq(min(log2(pdat$n)),max(log2(pdat$n)),1)
   )+
-  ylab("average seconds to compute")+
+  ylab("Average seconds to compute")+
   xlab(expression(paste('Sample size ', italic(n))))+
   theme_bw()+
   theme(
@@ -287,16 +287,16 @@ ggplot(pdat)+
   )+
   scale_linetype_manual(values=c("solid","31","11","dotdash", 21))+
   scale_color_manual(
-    values = c("black",RColorBrewer::brewer.pal(n=9,"YlOrRd")[c(7,5,3)],"gray")
+    values = c("black",RColorBrewer::brewer.pal(n=9,"YlOrRd")[c(7,5)],"purple")
   )+
   guides(
     color = guide_legend(nrow = 1, title = " "),
     linetype = guide_legend(nrowl = 1, title = " ")
   )+
   theme(
-    #legend.position = "none",
-    legend.key.width = unit(2, "line"),
-    legend.spacing.x = unit(0.075, "cm"),
+    legend.position = "bottom",
+    legend.key.width = unit(2.5, "line"),
+    legend.spacing.x = unit(.01, "cm"),
   )
 
 
@@ -304,8 +304,8 @@ p_time
 
 
 ggpubr::ggarrange(
-  p_width,
   p_time,
+  p_width,
   widths = c(1,1),
   common.legend = T,
   legend = "bottom"
