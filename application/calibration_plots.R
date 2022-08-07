@@ -13,7 +13,7 @@ library(calibrationband)
 bw_train <- readRDS("bw_train.RDS")
 bw_test <- readRDS("bw_test.RDS")
 
-cb = TRUE # cut.bands global
+cb = FALSE # cut.bands global
 
 # Fig 1 ----
 mod1 <- glm(
@@ -66,9 +66,9 @@ ggarrange(fig1a, fig1b, nrow = 1)
 ggsave("Fig_1.pdf", Fig_1, height = 4, width = 8)
 
 fig1$bands %>%
-  filter(x ==.05)
+  filter(x > .049 & x <.051)
 #   x    lwr    upr
-# .05  .0466  .0663
+# .0500  .0466  .0663
 
 
 mod1.pairs.tr <-
@@ -237,30 +237,3 @@ bind_rows(
 #   1     1     507807        230087       148680    113426
 #   2     2     501514        104782       303276     90428
 #   3     3       1416        885184          165    113235
-
-
-
-
-# zoom
-ggarrange(
-Fig_5_left+
-  coord_cartesian(xlim=c(0,.1),ylim=c(0,.15))+
-  theme(aspect.ratio=1)+
-  ggtitle("WoG continious model, non-crossing"),
-
-autoplot(mod2.fig5.check)+
-  coord_cartesian(xlim=c(0,.1),ylim=c(0,.15))+
-  theme(aspect.ratio=1)+
-  ggtitle("WoG continious model, raw"),
-
-Fig_5_right +
-  coord_cartesian(xlim=c(0,.1),ylim=c(0,.15))+
-  theme(aspect.ratio=1)+
-  ggtitle("Cauchit Model, non-crossing"),
-
-autoplot(mod3.fig5.check)+
-  coord_cartesian(xlim=c(0,.1),ylim=c(0,.15))+
-  theme(aspect.ratio=1)+
-  ggtitle("Cauchit Model, raw")
-
-)

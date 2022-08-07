@@ -19,7 +19,7 @@ bw_train <- readRDS("../application/bw_train.RDS")
 bw_test <- readRDS("../application/bw_test.RDS")
 
 lt = "solid" # linetype global for YB
-cb = TRUE
+cb = FALSE
 # Fig 1 ----
 mod1 <- glm(
   lbw ~ mager+ I(mager^2) + sex +  bmi + smoke + r1_diabetis + r2_hypertension +
@@ -58,12 +58,12 @@ min(mod1.pairs.ts$P)
 fig1a.addYB <-
   autoplot(fig1, approx.equi = 1000 ,cut.bands = cb)+
   geom_line(mapping = aes(
-    x=seq(min(mod1.pairs.ts$P),max(mod1.pairs.ts$P),length.out=1000),#fig1.addYB$bands$x,
-    y=interpolate(x=fig1.addYB$bands$x, y= fig1.addYB$bands$lwr, xout=seq(min(mod1.pairs.ts$P),max(mod1.pairs.ts$P),length.out=1000), right = 0)#fig1.addYB$bands$lwr
+    x=seq(0,1,length.out=1000),#fig1.addYB$bands$x,
+    y=interpolate(x=fig1.addYB$bands$x, y= fig1.addYB$bands$lwr, xout=seq(0,1,length.out=1000), right = 0)#fig1.addYB$bands$lwr
     ), color = "purple", linetype = lt)+
   geom_line(mapping = aes(
-    x=seq(min(mod1.pairs.ts$P),max(mod1.pairs.ts$P),length.out=1000),
-    y=interpolate(x=fig1.addYB$bands$x, y= fig1.addYB$bands$upr, xout=seq(min(mod1.pairs.ts$P),max(mod1.pairs.ts$P),length.out=1000), right = 1)#fig1.addYB$bands$upr
+    x=seq(0,1,length.out=1000),
+    y=interpolate(x=fig1.addYB$bands$x, y= fig1.addYB$bands$upr, xout=seq(0,1,length.out=1000), right = 1)#fig1.addYB$bands$upr
     ), color = "purple",  linetype = lt)+
   xlab(expression(paste('Forecast value ', italic(x))))+
   ylab(expression(paste('Calibration curve ', italic(p))))
@@ -72,12 +72,12 @@ fig1a.addYB <-
 fig1b.addYB <-
   autoplot(fig1, approx.equi = 1000,cut.bands = cb)+
   geom_line(mapping = aes(
-    x=seq(min(mod1.pairs.ts$P),max(mod1.pairs.ts$P),length.out=1000),#fig1.addYB$bands$x,
-    y=interpolate(x=fig1.addYB$bands$x, y= fig1.addYB$bands$lwr, xout=seq(min(mod1.pairs.ts$P),max(mod1.pairs.ts$P),length.out=1000), right = 0)#fig1.addYB$bands$lwr
+    x=seq(0,1,length.out=1000),#fig1.addYB$bands$x,
+    y=interpolate(x=fig1.addYB$bands$x, y= fig1.addYB$bands$lwr, xout=seq(0,1,length.out=1000), right = 0)#fig1.addYB$bands$lwr
   ), color = "purple", linetype = lt)+
   geom_line(mapping = aes(
-    x=seq(min(mod1.pairs.ts$P),max(mod1.pairs.ts$P),length.out=1000),
-    y=interpolate(x=fig1.addYB$bands$x, y= fig1.addYB$bands$upr, xout=seq(min(mod1.pairs.ts$P),max(mod1.pairs.ts$P),length.out=1000), right = 1)#fig1.addYB$bands$upr
+    x=seq(0,1,length.out=1000),
+    y=interpolate(x=fig1.addYB$bands$x, y= fig1.addYB$bands$upr, xout=seq(0,1,length.out=1000), right = 1)#fig1.addYB$bands$upr
   ), color = "purple",  linetype = lt)+
   coord_cartesian(xlim=c(0,.1),ylim=c(0,.15))+
   theme(aspect.ratio=1)+
@@ -123,12 +123,12 @@ fig5a.addYB$bands$x
 left <-
   autoplot(mod2.fig5,cut.bands = cb)+
   geom_line(mapping = aes(
-    x=seq(min(mod2.pairs.ts$P),max(mod2.pairs.ts$P),length.out=1000),
-    y=interpolate(x=fig5a.addYB$bands$x, y= fig5a.addYB$bands$lwr, xout=seq(min(mod2.pairs.ts$P),max(mod2.pairs.ts$P),length.out=1000), right = 0)#fig5a.addYB$bands$lwr
+    x=seq(0,1,length.out=1000),
+    y=interpolate(x=fig5a.addYB$bands$x, y= fig5a.addYB$bands$lwr, xout=seq(0,1,length.out=1000), right = 0)#fig5a.addYB$bands$lwr
     ), color = "purple", linetype = lt)+
   geom_line(mapping = aes(
-    x=seq(min(mod2.pairs.ts$P),max(mod2.pairs.ts$P),length.out=1000),
-    y=interpolate(x=fig5a.addYB$bands$x, y= fig5a.addYB$bands$upr, xout=seq(min(mod2.pairs.ts$P),max(mod2.pairs.ts$P),length.out=1000), right = 1)#fig5a.addYB$bands$upr
+    x=seq(0,1,length.out=1000),
+    y=interpolate(x=fig5a.addYB$bands$x, y= fig5a.addYB$bands$upr, xout=seq(0,1,length.out=1000), right = 1)#fig5a.addYB$bands$upr
   ), color = "purple",  linetype = lt)+
   xlab(expression(paste('Forecast value ', italic(x))))+
   ylab(expression(paste('Calibration curve ', italic(p))))
@@ -173,12 +173,12 @@ fig5b.addYB <- calibration_bands(
 right <-
   autoplot(mod3.fig5,cut.bands = cb)+
   geom_line(mapping = aes(
-    x=seq(min(mod3.pairs.ts$P),max(mod3.pairs.ts$P),length.out=1000),
-    y=interpolate(x=fig5b.addYB$bands$x, y= fig5b.addYB$bands$lwr, xout=seq(min(mod3.pairs.ts$P),max(mod3.pairs.ts$P),length.out=1000), right = 0)#fig5b.addYB$bands$lwr
+    x=seq(0,1,length.out=1000),
+    y=interpolate(x=fig5b.addYB$bands$x, y= fig5b.addYB$bands$lwr, xout=seq(0,1,length.out=1000), right = 0)#fig5b.addYB$bands$lwr
     ), color = "purple",  linetype = lt)+
   geom_line(mapping = aes(
-    x=seq(min(mod3.pairs.ts$P),max(mod3.pairs.ts$P),length.out=1000),
-    y=interpolate(x=fig5b.addYB$bands$x, y= fig5b.addYB$bands$upr, xout=seq(min(mod3.pairs.ts$P),max(mod3.pairs.ts$P),length.out=1000), right = 1)#fig5b.addYB$bands$upr
+    x=seq(0,1,length.out=1000),
+    y=interpolate(x=fig5b.addYB$bands$x, y= fig5b.addYB$bands$upr, xout=seq(0,1,length.out=1000), right = 1)#fig5b.addYB$bands$upr
     ), color = "purple",  linetype = lt)+
   xlab(expression(paste('Forecast value ', italic(x))))+
   ylab(expression(paste('Calibration curve ', italic(p))))
