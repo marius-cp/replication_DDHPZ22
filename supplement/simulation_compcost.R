@@ -158,6 +158,12 @@ dat %>%
 
 n_set = c(8192,16384)
 
+sample_sizes = c(
+  '8192' = "n==8192",
+  '16384' = "n==16384"
+)
+
+
 
 p_width <-
 dat %>%
@@ -185,7 +191,7 @@ dat %>%
       "round 3" = "rounding with K=10^3",
       "round 2" = "rounding with K=10^2",
       "round 1" = "rounding with K=10^1",
-      "YB 0" = "Yang & Baber",
+      "YB 0" = "Yang & Barber",
       .ordered = T
     )
   ) %>%
@@ -198,8 +204,8 @@ dat %>%
     #size=1
   )+
   xlim(c(0,1))+
-  facet_grid(n~.#setup,
-             #labeller = labeller(n  = as_labeller(sample_sizes, label_parsed))
+  facet_grid(n~.,#setup,
+             labeller = labeller(n  = as_labeller(sample_sizes, label_parsed))
              )+
   xlab(expression(paste('Forecast value ', italic(x))))+
   ylab("Average width")+
@@ -255,7 +261,7 @@ avg %>%
       "round 3" = "K = 1000        ",
       "round 2" = "K = 100        ",
       "round 1" = "K = 10        ",
-      "YB 0" = "Yang & Baber        ",
+      "YB 0" = "Yang & Barber        ",
       .ordered = T
     )
   )

@@ -41,7 +41,7 @@ dat.cov <-
       method,
       round = "Calibration Bands",
       round.nc = "NC Calibration Bands",
-      YB = "YB",
+      YB = "Yang & Barber",
       GiViTI = "GiViTI"
       ),
     setup = recode_factor(

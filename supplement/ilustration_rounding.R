@@ -41,7 +41,6 @@ p.dat <- function(bands){
 pc <- approxfun(y = c(0, 0.25, .9, .95), x = c(0, .25,.257, 1), ties = min)
 
 
-
 set.seed(123)
 al = .05
 n <-10000
@@ -92,44 +91,12 @@ plotdat <-
       "Inf" = "K = Inf         ",
       "1000" = "K = 1000         ",
       "100" = "K = 100         ",
-      "20" = "K = 10         ",
-      #"YB 0" = "Yang & Baber      ",
+      "20" = "K = 20         ",
+      #"YB 0" = "Yang & Barber      ",
       .ordered = T
     )
   )
 
-
-
-widthdat1 <-
-  bind_cols(
-  plotdat  %>% group_by(K,x_lwr) %>% summarise(lwr=min(lwr)),
-  plotdat %>% group_by(K,x_upr) %>% summarise(upr=max(upr))
-  ) %>%
-  mutate(width = upr-lwr, x = x_lwr, "K" = K...1 ) %>%
-  ungroup()
-
-p_2 <-
-  bind_rows(
-    widthdat1 %>%  mutate(id = "width"),
-    widthdat1 %>% dplyr::filter(x>=.199&x<=.3) %>% mutate(id = "zoom width")
-    ) %>%
-  ggplot()+
-  facet_wrap(id ~ ., scales = "free_x")+
-  geom_step(aes(x=x,y=width, color = as.factor(K...1), linetype = as.factor(K...1)), direction = "hv")+
-  theme_bw()+
-  theme(
-    aspect.ratio=1,
-    legend.position = "bottom"
-    )+
-  scale_color_manual(
-    values = c(RColorBrewer::brewer.pal(n=9,"YlOrRd")[(c(5,7))], "black" )
-  )+
-  scale_linetype_manual(
-    values = c(11,21,31)
-  )+
-  guides(color = guide_legend(title = ""), linetype = guide_legend(title = ""))+
-  xlab(expression(paste('Forecast value ', italic(x))))
-p_2
 
 pcurve <-
   bind_rows(
@@ -173,7 +140,4 @@ p_1 <-
 
 p_1
 
-
-p <- ggpubr::ggarrange(p_1,p_2, nrow = 2, common.legend = T, legend = "bottom")
-p
 ggsave("Fig_S1.pdf", p_1, width = 8, height = 5)
