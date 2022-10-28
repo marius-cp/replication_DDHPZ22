@@ -127,13 +127,16 @@ p <-
       vjust = 1,
       hjust=1,
       colour = "black",
-      size = 10
+      size = 12
         ),
-    axis.text.y = element_text(colour = "black", size = 10),
-    strip.text = element_text(face = "bold", size = 10),
+    axis.text.y = element_text(colour = "black", size = 12),
+    strip.text = element_text(face = "bold", size = 12),
     legend.key.width = unit(3, "line"),
     legend.spacing.x = unit(1, "mm"),
-    plot.title = element_text(size = 10)
+    plot.title = element_text(size = 10),
+    axis.title=element_text(
+      size=13
+    )
     )+
   guides(
     colour= guide_legend(
@@ -145,8 +148,8 @@ p <-
       title = expression(paste('shape parameter ', italic(s), ':     '))
     )
     )+
-  xlab(expression(paste('Forecast value ', italic(x))))+
-  ylab(expression(paste('Calibration curve ', italic(p))))+
+  xlab(expression(paste('Covariate value ', italic(x))))+
+  ylab(expression(paste('Regression function ', italic(p))))+
   scale_linetype_manual(values=c( "solid", "dotted", "12"))+
   scale_color_brewer(palette = "Set1")+
   coord_fixed(ratio =1)

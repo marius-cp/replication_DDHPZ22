@@ -29,7 +29,7 @@ dat.w01 <-
     n = log2(n),
     Band = recode_factor(
       method,
-      round = "Calibration Bands",
+      round = "Our method",#"Calibration Bands",
       round.nc = "Non-Crossing Calibration Bands",
       YB = "YB",
       GiViTI = "GiViTI"
@@ -73,16 +73,19 @@ wid.01 <-
       vjust = 1,
       hjust=1,
       colour = "black",
-      size = 10
+      size = 12
       ),
     axis.text.y = element_text(
       colour = "black",
-      size = 10
+      size = 12
       ),
     strip.text = element_text(face = "bold",
-                              size = 10
+                              size = 12
                               ),
-    strip.text.y = element_blank()
+    strip.text.y = element_blank(),
+    axis.title=element_text(
+      size=13
+    )
     )+
   scale_linetype_manual(values=c("solid","22"))+
   scale_color_brewer(palette = "Set1")+
@@ -99,6 +102,7 @@ wid.01 <-
 
 
 wid.01
+
 ggsave("Fig_4_top.pdf", wid.01, height = 3, width = (10))
 
 # width per x ----
@@ -128,7 +132,7 @@ dat.wx <-
     #n = log2(n),
     Band = recode_factor(
       method,
-      round = "Calibration Bands",
+      round = "Our method",#"Calibration Bands",
       round.nc = "Non-Crossing Calibration Bands",
       YB = "YB",
       GiViTI = "GiViTI"
@@ -169,31 +173,34 @@ w <-
     aspect.ratio=1,
     legend.position = "none",#"bottom",
     legend.text = element_text(
-      size = 10,
+      size = 12,
       colour = "black",
       margin = margin(r = 12, unit = "pt")
     ),
-    legend.title = element_text(size = 10),
+    legend.title = element_text(size = 12),
     axis.text.x = element_text(
       angle = 45,
       vjust = 1,
       hjust=1,
       colour = "black",
-      size = 10
+      size = 12
     ),
     axis.text.y = element_text(
       colour = "black",
-      size = 10
+      size = 12
       ),
     strip.text = element_text(
       face = "bold",
-      size = 10
+      size = 12
       ),
     legend.key.width = unit(3, "line"),
     legend.spacing.x = unit(0.075, "cm"),
-    plot.margin=unit(c(-.5,.05,-.6,.05), "null")
+    plot.margin=unit(c(-.5,.05,-.6,.05), "null"),
+    axis.title=element_text(
+      size=13
+    )
   )+
-  xlab(expression(paste('Forecast value ', italic(x))))+
+  xlab(expression(paste('Covariate value ', italic(x))))+
   ylab("Average width")+
   scale_linetype_manual(values=c("solid","22"))+
   scale_color_brewer(palette = "Set1")+
@@ -204,6 +211,8 @@ w <-
 w
 
 ggsave("Fig_4_bottom.pdf", w, height = 4.75, width = (10))
+
+
 
 # other stuff  ----
 # verbal stuff on difference between round and nc.round

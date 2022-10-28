@@ -39,7 +39,7 @@ dat.cov <-
   mutate(
     method = recode_factor(
       method,
-      round = "Calibration Bands",
+      round = "Our Method",
       round.nc = "NC Calibration Bands",
       YB = "Yang & Barber",
       GiViTI = "GiViTI"
@@ -89,14 +89,14 @@ p <-
       color = "black", size =1.2
       ),
     legend.text = element_text(
-      size = 10,
+      size = 12,
       colour = "black",
       margin = margin(
         r = 12,
         unit = "pt"
         )
       ),
-    legend.title = element_text(size = 10),
+    legend.title = element_text(size = 12),
     legend.key.size = unit(5, "mm"),
     legend.spacing.x = unit(1, "mm"),
     panel.grid.major = element_blank(),
@@ -106,15 +106,18 @@ p <-
       vjust = 1,
       hjust=1,
       colour = "black",
-      size = 10),
+      size = 12),
     axis.text.y = element_text(
       colour = "black",
-      size = 10
+      size = 12
       ),
     strip.text = element_text(
       face = "bold",
-      size = 10
-      )
+      size = 12
+      ),
+    axis.title=element_text(
+      size=13
+    )
     )+
   scale_x_continuous(
     breaks = seq(min(dat.cov$n),max(dat.cov$n),2),
@@ -148,6 +151,7 @@ p <-
   ylab(expression(paste('Shape parameter ', italic(s))))
 
 p
+
 
 ggsave("Fig_3.pdf", height = (5+2.5), width = (10))
 

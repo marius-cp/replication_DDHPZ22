@@ -66,7 +66,21 @@ fig1a.addYB <-
     y=interpolate(x=fig1.addYB$bands$x, y= fig1.addYB$bands$upr, xout=seq(0,1,length.out=1000), right = 1)#fig1.addYB$bands$upr
     ), color = "purple",  linetype = lt)+
   xlab(expression(paste('Forecast value ', italic(x))))+
-  ylab(expression(paste('Calibration curve ', italic(p))))
+  ylab(expression(paste('Calibration curve ', italic(p))))+
+  theme(
+    aspect.ratio=1,
+    axis.title=element_text(
+      size=13
+    ),
+    axis.text.x = element_text(
+      colour = "black",
+      size = 12
+    ),
+    axis.text.y = element_text(
+      colour = "black",
+      size = 12
+    )
+  )
 
 
 fig1b.addYB <-
@@ -80,7 +94,20 @@ fig1b.addYB <-
     y=interpolate(x=fig1.addYB$bands$x, y= fig1.addYB$bands$upr, xout=seq(0,1,length.out=1000), right = 1)#fig1.addYB$bands$upr
   ), color = "purple",  linetype = lt)+
   coord_cartesian(xlim=c(0,.1),ylim=c(0,.15))+
-  theme(aspect.ratio=1)+
+  theme(
+    aspect.ratio=1,
+    axis.title=element_text(
+      size=13
+    ),
+    axis.text.x = element_text(
+      colour = "black",
+      size = 12
+    ),
+    axis.text.y = element_text(
+      colour = "black",
+      size = 12
+    )
+  )+
   xlab(expression(paste('Forecast value ', italic(x))))+
   ylab(expression(paste('Calibration curve ', italic(p))))
 
@@ -131,7 +158,21 @@ left <-
     y=interpolate(x=fig5a.addYB$bands$x, y= fig5a.addYB$bands$upr, xout=seq(0,1,length.out=1000), right = 1)#fig5a.addYB$bands$upr
   ), color = "purple",  linetype = lt)+
   xlab(expression(paste('Forecast value ', italic(x))))+
-  ylab(expression(paste('Calibration curve ', italic(p))))
+  ylab(expression(paste('Calibration curve ', italic(p))))+
+  theme(
+    aspect.ratio=1,
+    axis.title=element_text(
+      size=13
+    ),
+    axis.text.x = element_text(
+      colour = "black",
+      size = 12
+    ),
+    axis.text.y = element_text(
+      colour = "black",
+      size = 12
+    )
+  )
 
 
 # mod 3 ----
@@ -181,12 +222,25 @@ right <-
     y=interpolate(x=fig5b.addYB$bands$x, y= fig5b.addYB$bands$upr, xout=seq(0,1,length.out=1000), right = 1)#fig5b.addYB$bands$upr
     ), color = "purple",  linetype = lt)+
   xlab(expression(paste('Forecast value ', italic(x))))+
-  ylab(expression(paste('Calibration curve ', italic(p))))
+  ylab(expression(paste('Calibration curve ', italic(p))))+
+  theme(
+    aspect.ratio=1,
+    axis.title=element_text(
+      size=13
+    ),
+    axis.text.x = element_text(
+      colour = "black",
+      size = 12
+    ),
+    axis.text.y = element_text(
+      colour = "black",
+      size = 12
+    )
+  )
 
 
 
 comb <-
 ggarrange(fig1a.addYB, fig1b.addYB, left, right, nrow = 2, ncol = 2)
 
-
-ggsave("Fig_S3.pdf", height = 8, width = 8)
+ggsave("Fig_S3.pdf", height = 10, width = 10)

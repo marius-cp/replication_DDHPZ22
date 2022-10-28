@@ -9,7 +9,13 @@ T. Dimitriadis, L. Dümbgen, A. Henzi, M. Puke, and J. Ziegel. Honest calibratio
 
 ### Associated repository
 
+The package `calibrationband` is available on [The Comprehensive R Archive Network (CRAN)](https://cran.r-project.org/web/packages/calibrationband/index.html) and via [GitHub](https://github.com/marius-cp/calibrationband).
+
 ```{r eval=FALSE, include=T}
+# CRAN version
+install.packages("calibrationband")
+
+# development version: 
 #install.packages("devtools")
 devtools::install_github("marius-cp/calibrationband")
 library(calibrationband)
@@ -21,7 +27,7 @@ library(calibrationband)
 ### Simulations 
 
 All graphs in chapter 5 can be replicated based on the code in the folder `simulation`. 
-The simulation results can be obtained by running the script `simulation.R`. The simulation output necessary to replicate the results in Figures 3 and 4 is provided in `Fig_3.RDS` and `Fig_4.RDS`.  
+The simulation results can be obtained by running the script `simulation.R`. The simulation output necessary to replicate the results in Figures 3 and 4 is provided in `Fig_3.RDS` and `Fig_4.RDS`.
 
 ### Application
 
@@ -34,3 +40,8 @@ The code in the respective folder allows to replicate Figure 1 and 5. The data p
 
 
 All plots were created using the `calibrationband` library. 
+
+### Supplement 
+
+The folder `supplement` holds the replication files for the supplement material of our paper.
+

@@ -207,22 +207,36 @@ dat %>%
   facet_grid(n~.,#setup,
              labeller = labeller(n  = as_labeller(sample_sizes, label_parsed))
              )+
-  xlab(expression(paste('Forecast value ', italic(x))))+
+  xlab(expression(paste('Covariate value ', italic(x))))+
   ylab("Average width")+
   scale_linetype_manual(values=c("solid","31","11","dotdash", 21))+
   scale_color_manual(
   values = c("black",RColorBrewer::brewer.pal(n=9,"YlOrRd")[c(7,5)],"purple")
 )+
   theme_bw()+
- theme(
-   legend.position = "bottom",
-   legend.text = element_text(size = 10,
-                              colour = "black",
-                              margin = margin(r = 15, unit = "pt")
-   ),
-   legend.title = element_text(size = 10),
-   legend.key.width = unit(3, "line"),
-   legend.spacing.x = unit(0.1, "cm")
+  theme(
+    #aspect.ratio=1,
+    legend.position = "bottom",
+    legend.text = element_text(
+      size = 12,
+      colour = "black"
+    ),
+    legend.title = element_text(size = 12),
+    legend.key.size = unit(5, "mm"),
+    legend.spacing.x = unit(1, "mm"),
+    legend.key.width = unit(2.5, "line"),
+    axis.title=element_text(
+      size=13
+    ),
+    axis.text.x = element_text(
+      colour = "black",
+      size = 12
+    ),
+    axis.text.y = element_text(
+      colour = "black",
+      size = 12
+    ),
+    strip.text = element_text(face = "bold", size = 12)
   )+
   guides(
     color = guide_legend(nrow = 1, title = " "),
@@ -288,9 +302,6 @@ ggplot(pdat)+
   ylab("Average seconds to compute")+
   xlab(expression(paste('Sample size ', italic(n))))+
   theme_bw()+
-  theme(
-    #legend.position = "none"
-  )+
   scale_linetype_manual(values=c("solid","31","11","dotdash", 21))+
   scale_color_manual(
     values = c("black",RColorBrewer::brewer.pal(n=9,"YlOrRd")[c(7,5)],"purple")
@@ -300,9 +311,28 @@ ggplot(pdat)+
     linetype = guide_legend(nrowl = 1, title = " ")
   )+
   theme(
+    #aspect.ratio=1,
     legend.position = "bottom",
+    legend.text = element_text(
+      size = 12,
+      colour = "black"
+    ),
+    legend.title = element_text(size = 12),
+    legend.key.size = unit(5, "mm"),
+    legend.spacing.x = unit(1, "mm"),
     legend.key.width = unit(2.5, "line"),
-    legend.spacing.x = unit(.01, "cm"),
+    axis.title=element_text(
+      size=13
+    ),
+    axis.text.x = element_text(
+      colour = "black",
+      size = 12
+    ),
+    axis.text.y = element_text(
+      colour = "black",
+      size = 12
+    ),
+    strip.text = element_text(face = "bold", size = 12)
   )
 
 
@@ -317,5 +347,5 @@ ggpubr::ggarrange(
   legend = "bottom"
 )
 
-ggsave("Fig_S2.pdf", width = 10, height = 5)
+ggsave("Fig_S2.pdf", width = 10, height = 6)
 

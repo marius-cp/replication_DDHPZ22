@@ -7,7 +7,16 @@ calibration assessment for binary outcome predictions. *Preprint*,
 
 ### Associated repository
 
+The package `calibrationband` is available on [The Comprehensive R
+Archive Network
+(CRAN)](https://cran.r-project.org/web/packages/calibrationband/index.html)
+and via [GitHub](https://github.com/marius-cp/calibrationband).
+
 ``` r
+# CRAN version
+install.packages("calibrationband")
+
+# development version: 
 #install.packages("devtools")
 devtools::install_github("marius-cp/calibrationband")
 library(calibrationband)
@@ -37,3 +46,8 @@ the data (randomly split into a test and training set) is provided in
 </p>
 
 All plots were created using the `calibrationband` library.
+
+### Supplement
+
+The folder `supplement` holds the replication files for the supplement
+material of our paper.

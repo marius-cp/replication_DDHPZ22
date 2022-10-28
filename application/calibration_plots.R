@@ -45,7 +45,20 @@ fig1$bands %>% dplyr::filter(lwr>upr) # no crossings
 fig1a <-
 autoplot(fig1, approx.equi = 1000 ,cut.bands = cb)+
   xlab(expression(paste('Forecast value ', italic(x))))+
-  ylab(expression(paste('Calibration curve ', italic(p))))
+  ylab(expression(paste('Calibration curve ', italic(p))))+
+  theme(
+    axis.title=element_text(
+      size=13
+    ),
+    axis.text.x = element_text(
+      colour = "black",
+      size = 12
+    ),
+    axis.text.y = element_text(
+      colour = "black",
+      size = 12
+    )
+  )
 
 fig1a
 
@@ -56,14 +69,29 @@ fig1b <-
   coord_cartesian(xlim=c(0,.1),ylim=c(0,.15))+
   theme(aspect.ratio=1)+
   xlab(expression(paste('Forecast value ', italic(x))))+
-  ylab(expression(paste('Calibration curve ', italic(p))))
+  ylab(expression(paste('Calibration curve ', italic(p))))+
+  theme(
+    axis.title=element_text(
+      size=13
+    ),
+    axis.text.x = element_text(
+      colour = "black",
+      size = 12
+    ),
+    axis.text.y = element_text(
+      colour = "black",
+      size = 12
+    )
+  )
+
 
 fig1b
 
 Fig_1 <-
 ggarrange(fig1a, fig1b, nrow = 1)
+Fig_1
 
-ggsave("Fig_1.pdf", Fig_1, height = 4, width = 8)
+ggsave("Fig_1.pdf", Fig_1, height = 5, width = 10)
 
 fig1$bands %>%
   filter(x > .049 & x <.051)
@@ -112,7 +140,20 @@ mod2.fig5
 Fig_5_left <-
 autoplot(mod2.fig5, approx.equi = 1000, cut.bands = cb)+
   xlab(expression(paste('Forecast value ', italic(x))))+
-  ylab(expression(paste('Calibration curve ', italic(p))))
+  ylab(expression(paste('Calibration curve ', italic(p))))+
+  theme(
+    axis.title=element_text(
+      size=13
+    ),
+    axis.text.x = element_text(
+      colour = "black",
+      size = 12
+    ),
+    axis.text.y = element_text(
+      colour = "black",
+      size = 12
+    )
+  )
 
 mod2.pairs.tr <-
   tibble(
@@ -170,7 +211,20 @@ mod3.fig5
 Fig_5_right <-
   autoplot(mod3.fig5, approx.equi = 1000 ,cut.bands = cb)+
   xlab(expression(paste('Forecast value ', italic(x))))+
-  ylab(expression(paste('Calibration curve ', italic(p))))
+  ylab(expression(paste('Calibration curve ', italic(p))))+
+  theme(
+    axis.title=element_text(
+      size=13
+    ),
+    axis.text.x = element_text(
+      colour = "black",
+      size = 12
+    ),
+    axis.text.y = element_text(
+      colour = "black",
+      size = 12
+    )
+  )
 
 mod3.pairs.tr <-
   tibble(
@@ -200,7 +254,7 @@ Fig_5 <-
   ggarrange(Fig_5_left, Fig_5_right, nrow = 1)
 Fig_5
 
-ggsave("Fig_5.pdf", Fig_5, height = 4, width = 8)
+ggsave("Fig_5.pdf", Fig_5, height = 5, width = 10)
 
 readme <-
   ggarrange(
@@ -209,7 +263,9 @@ readme <-
     nrow = 1)
 readme
 
-ggsave("Fig_readme.png", readme, height = 4, width = 8)
+
+
+#ggsave("Fig_readme.png", readme, height = 4, width = 8)
 
 
 # other ----

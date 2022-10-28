@@ -76,6 +76,8 @@ round1 <-
 standard <-
   calibration_bands(x=dat$pr, y=dat$y,alpha=al, method = "standard", nc = F)
 
+(standard$time)
+
 plotdat <-
   bind_rows(
     #p.dat(round1$bands)%>% mutate(K ="10", k = 10),
@@ -100,29 +102,47 @@ plotdat <-
 
 pcurve <-
   bind_rows(
-    dat %>% mutate(id = "calibration bands"),
-    dat %>% dplyr::filter(pr>=.2&pr<=.3) %>% mutate(id = "zoom calibration bands")
+    dat %>% mutate(id = "Complete Display"),
+    dat %>% dplyr::filter(pr>=.2&pr<=.3) %>% mutate(id = "Zoomed Version")
     )
 
 p_1 <-
   ggplot(
     bind_rows(
-      plotdat  %>% mutate(id = "calibration bands"),
-      plotdat  %>% dplyr::filter(x_upr>=.2&x_lwr<=.3) %>% mutate(id = "zoom calibration bands")
+      plotdat  %>% mutate(id = "Complete Display"),
+      plotdat  %>% dplyr::filter(x_upr>=.2&x_lwr<=.3) %>% mutate(id = "Zoomed Version")
     )
   )+
   facet_wrap(id~., scales = "free_x")+
   geom_line(data = pcurve,mapping = aes(x=pr,y=cep), color = "darkgray")+
   geom_line(mapping = aes(x=x_upr,y=upr,color=as.factor(K), linetype = as.factor(K)))+
   geom_line(mapping=aes(x=x_lwr,y=lwr,color=as.factor(K), linetype = as.factor(K)))+
-  xlab(expression(paste('Forecast value ', italic(x))))+
-  ylab(expression(paste('Calibration curve ', italic(p))))+
+  xlab(expression(paste('Covariate value ', italic(x))))+
+  ylab(expression(paste('Regression function ', italic(p))))+
   theme_bw()+
   theme(
     aspect.ratio=1,
     legend.position = "bottom",
+    legend.text = element_text(
+      size = 12,
+      colour = "black"
+    ),
+    legend.title = element_text(size = 12),
+    legend.key.size = unit(5, "mm"),
+    legend.spacing.x = unit(1, "mm"),
     legend.key.width = unit(2.5, "line"),
-    legend.spacing.x = unit(.01, "cm")
+    axis.title=element_text(
+      size=13
+    ),
+    axis.text.x = element_text(
+      colour = "black",
+      size = 12
+    ),
+    axis.text.y = element_text(
+      colour = "black",
+      size = 12
+    ),
+    strip.text = element_text(face = "bold", size = 12)
   )+
   scale_color_manual(
     values = c("black",RColorBrewer::brewer.pal(n=9,"YlOrRd")[(c(7,5))], "black" )
@@ -140,4 +160,4 @@ p_1 <-
 
 p_1
 
-ggsave("Fig_S1.pdf", p_1, width = 8, height = 5)
+ggsave("Fig_S1.pdf", p_1, height = 6, width = (10))
